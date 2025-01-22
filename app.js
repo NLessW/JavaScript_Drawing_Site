@@ -1,8 +1,11 @@
+const color = document.getElementById("color");
+const lineWidth = document.getElementById("line-width");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 800;
-ctx.lineWidth = 2;
+//ctx.lineWidth = 2;
+ctx.lineWidth = lineWidth.value;
 // Practice Rectangle
 /*
 ctx.rect(50, 50, 100, 100);
@@ -82,8 +85,7 @@ function onClick(event) {
 canvas.addEventListener("mousemove", onClick);
 */
 
-// Draw mouse move
-/*
+// Draw event - line
 let isPainting = false;
 function onMove(event) {
   if (isPainting) {
@@ -100,8 +102,22 @@ function startPainting() {
 function cancelPainting() {
   isPainting = false;
 }
+function onLineWidthChange() {
+  console.log(event.target.value);
+
+  ctx.beginPath();
+  ctx.lineWidth = lineWidth.value;
+}
+
+function onColorChange(event) {
+  ctx.beginPath();
+  ctx.strokeStyle = event.target.value;
+  ctx.fillStyle = event.target.value;
+}
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting);
-*/
+
+lineWidth.addEventListener("change", onLineWidthChange);
+color.addEventListener("change", onColorChange);
