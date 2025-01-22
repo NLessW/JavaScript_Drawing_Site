@@ -2,7 +2,7 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 800;
-
+ctx.lineWidth = 2;
 // Practice Rectangle
 /*
 ctx.rect(50, 50, 100, 100);
@@ -58,7 +58,7 @@ ctx.fill();
 
 // Practice Mouse line event
 /*
-ctx.lineWidth = 2;
+
 const colors = [
   "#ff3838",
   "#ffb8b8",
@@ -80,4 +80,28 @@ function onClick(event) {
 }
 
 canvas.addEventListener("mousemove", onClick);
+*/
+
+// Draw mouse move
+/*
+let isPainting = false;
+function onMove(event) {
+  if (isPainting) {
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+    return;
+  }
+  ctx.moveTo(event.offsetX, event.offsetY);
+}
+
+function startPainting() {
+  isPainting = true;
+}
+function cancelPainting() {
+  isPainting = false;
+}
+canvas.addEventListener("mousemove", onMove);
+canvas.addEventListener("mousedown", startPainting);
+canvas.addEventListener("mouseup", cancelPainting);
+canvas.addEventListener("mouseleave", cancelPainting);
 */
