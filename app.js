@@ -1,3 +1,8 @@
+//const colorOptions = document.getElementByClassName("color-options");
+const modeBtn = document.getElementById("mode-btn");
+const colorOptions = Array.from(
+  document.getElementsByClassName("color-option")
+);
 const color = document.getElementById("color");
 const lineWidth = document.getElementById("line-width");
 const canvas = document.querySelector("canvas");
@@ -87,6 +92,7 @@ canvas.addEventListener("mousemove", onClick);
 
 // Draw event - line
 let isPainting = false;
+let isFilling = false;
 function onMove(event) {
   if (isPainting) {
     ctx.lineTo(event.offsetX, event.offsetY);
@@ -97,6 +103,7 @@ function onMove(event) {
 }
 
 function startPainting() {
+  ctx.beginPath();
   isPainting = true;
 }
 function cancelPainting() {
@@ -105,19 +112,45 @@ function cancelPainting() {
 function onLineWidthChange() {
   console.log(event.target.value);
 
-  ctx.beginPath();
   ctx.lineWidth = lineWidth.value;
 }
 
 function onColorChange(event) {
-  ctx.beginPath();
   ctx.strokeStyle = event.target.value;
   ctx.fillStyle = event.target.value;
 }
+
+function onColorClick(event) {
+  targetDataColor = event.target.dataset.color;
+  ctx.strokeStyle = targetDataColor;
+  ctx.fillStyle = targetDataColor;
+  color.value = targetDataColor;
+}
+
+function onModeClick() {
+  if (isFilling) {
+    isFilling = false;
+    modeBtn.innerText = "Fill";
+  } else {
+    isFilling = true;
+    modeBtn.innerText = "Draw";
+  }
+}
+function onCanvasClick() {
+  if (isFilling) {
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting);
+canvas.addEventListener("click", onCanvasClick);
 
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
+
+colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
+
+modeBtn.addEventListener("click", onModeClick);
